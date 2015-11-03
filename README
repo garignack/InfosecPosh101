@@ -1,21 +1,21 @@
 # Intro to PowerShell for Security
 
-##Overview
+## Overview
 This is a project that originally started as the Lab disk given out during my presentation at Hack3rcon 5 in 2014.  Hopefully it will be helpful to you in learning PowerShell.
 
 
-##People to Follow 
+## People to Follow 
 
-Carlos Perez (@Carlos_Perez) - [http://darkoperator.com](http://darkoperator.com) | Author of PoSH-SecMod and PoSH-SSH2
+Carlos Perez ([@Carlos_Perez](https://twitter.com/Carlos_Perez)) - [http://darkoperator.com](http://darkoperator.com) | Author of PoSH-SecMod and PoSH-SSH2
 
-Matt Graeber (@mattifestation) - [exploit-monday.com](http://exploit-monday.com) | Author or PowerSploit
+Matt Graeber ([@mattifestation](https://twitter.com/mattifestation "@mattifestation")) - [exploit-monday.com](http://exploit-monday.com) | Author or PowerSploit
 
-David Kennedy (@HackingDave) - [trustedsec.com](http://trustedsec.com) | Author of SET, 
+David Kennedy ([@HackingDave](https://twitter.com/HackingDave)) - [trustedsec.com](http://trustedsec.com) | Author of SET, 
 
-MSFT Scripting Guys (@ScriptingGuys) - [http://blogs.technet.com/b/heyscriptingguy](http://blogs.technet.com/b/heyscriptingguy)/ | The definitive blog to learning all about PowerShell 
+MSFT Scripting Guys ([@ScriptingGuys](https://twitter.com/ScriptingGuys)) - [http://blogs.technet.com/b/heyscriptingguy](http://blogs.technet.com/b/heyscriptingguy)/ | The definitive blog to learning all about PowerShell 
 
 
-##Sites
+## Sites
 [http://powershell.org](http://powershell.org)
 [http://poshcode.org/](http://poshcode.org/)
 [http://technet.microsoft.com/en-us/scriptcenter/powershell.aspx](http://technet.microsoft.com/en-us/scriptcenter/powershell.aspx)
