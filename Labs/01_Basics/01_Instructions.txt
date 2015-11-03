@@ -1,0 +1,118 @@
+#Lab 01 - Introduction to the PowerShell World
+
+## Cmdlets
+
+http://technet.microsoft.com/en-us/scriptcenter/dd772285.aspx
+> Cmdlets are the heart-and-soul of Windows PowerShell, Microsoft's latest command shell/scripting language. Cmdlets include everything from reading and writing text files to managing event logs to sorting and filtering data.Unlike traditional command-line interface commands, Windows PowerShell Cmdlets are designed to deal with objects - structured information that is more than just a string of characters appearing on the screen. PowerShell Cmdlets use the Verb-Noun pairs.  The Verb part of the name identifies the action the Cmdlet will perform.
+
+First lets work with a few key built-in Cmdlets
+
+Get-Help -Displays help about Windows PowerShell cmdlets and concepts.
+
+Get-Command -Retrieves a list of all available PowerShell Cmdlets
+
+Get-ChildItem -Gets the files and folders in a file system drive. 
+
+Get-Content -Gets the contents of a file. 
+
+Get-Member -Gets the properties and methods of objects.
+
+Where-Object -Selects objects from a collection based on their property values.
+
+ForEach-Object -Performs an operation against each item in a collection of input objects.
+
+Select-object -Selects objects or object properties.
+
+Select-String -Finds text in strings and files.
+
+Out-File -Sends output to a file.
+
+Out-Null -Deletes output instead of sending it down the pipeline.
+
+Out-Grid -Sends output to an interactive table in a separate window.
+
+New-Object -Creates an instance of a Microsoft .NET Framework or COM object.
+
+Write-Host -Writes customized output to a host.
+
+Write-output -Sends the specified objects to the next command in the pipeline. If the command is the last command in the pipeline, the objects are displayed in the console.
+
+
+
+##Pipelines
+
+Cmdlets are most powerful when working together.  The output from one command can be sent to another command through a "pipeline" by using the | character.
+
+A few examples 
+
+Get-ChildItem | Select-Object name, length | sort-object length
+
+Get-Command -verb write | Get-Help | out-file write-commands.txt
+
+Get-Content "D:\Samples\Nmap_scanme.xml" | Select-String "<port "
+
+##Variables
+Variables are universal in-memory data storage and variable names always start with a "$".  Any command output can be stored in a variable for later use.  
+
+$Name = "Inigo Montoya"
+Write-Host "Hello My Name is $Name. You killed my father prepare to die!"
+
+$files = Get-ChildItem "D:\Samples\"
+
+You can specify what type of variable to save by using the [_type] notation.  PowerShell will automatically attempt to convert the output to that type of object is possible
+
+The following automatically attempts to parse an input file as an XML object.
+[xml]$scan = Get-Content "D:\Samples\Nmap_scanme.xml"
+$scan.nmaprun.host.ports.port | select-object portid, protocol | Out-GridView
+
+[int32] $intTest = 20
+
+You can save any object into variables, including .NET and COM Objects, even applications.
+$sw = New-Object "System.Diagnostics.Stopwatch"
+$sw | Get-Member
+$sw.start
+$sw.stop
+$sw.Elapsed
+
+$ie = New-Object -ComObject InternetExplorer.Application
+$ie.Visible = $true
+$ie.Navigate("http://www.hack3rcon.org")
+$html = $ie.Document.Body.InnerText
+$ie.Quit()
+Remove-Variable $ie
+
+##Scripts
+Scripts allow you to combine multiple commands into one easy to run file.  Scripts can be entirely self contained or can take command line arguments.
+
+See base64.ps1 and base64_input.ps1
+
+##Functions
+Functions allow you to create something in memory that looks, works, smells and feels almost exactly like a native Cmdlet.  While it is not mandatory to do so, it is highly encourage to follow the Verb-Noun rules using approved verbs when naming functions.
+
+The basic construct of a function is:
+
+Function Verb-Noun {
+    [CmdletBinding()]
+    param
+    (
+        ValueFromPipeline=$True,
+        [string]$input
+    )
+	
+	Begin{
+		Write-Host "This is run once at the start of the function and is used to set-up the function"
+	}
+	Process{
+		Write Host "This is run for each object passed through the pipeline"
+	}
+	End{
+		Write-Host "This is run once at the end of the function and is used to tear down the function"
+	}
+}
+
+See Convert-StringToBase64.ps1 
+
+##Modules
+"A script module is a file (.psm1) that contains any valid Windows PowerShell code. Script developers and administrators can use this type of module to create modules whose members include functions, variables, and more"
+
+$env:PSModulePath

@@ -1,0 +1,66 @@
+#Using .NET in PowerShell
+
+One of the biggest strengths of PowerShell is the ability to natively interact with and use .NET objects from within powershell scripts.  .Net is a programming infrastructure created by Microsoft for building, deploying, and running applications and services.  A significant amount of core windows functionality is available through .NET Libraries, as well as a wealth of third-party .NET modules.
+
+
+There are multiple methods of using .NET code within PowerShell.  
+
+##Directly Calling .NET methods
+By using the [library]::method() nomeclature, we can directly call a loaded .NET method, storing the result as a variable for our use later.
+
+$algorithm = "SHA-256"
+$hashAlgorithm = [System.Security.Cryptography.HashAlgorithm]::Create($algorithm)
+
+
+[System.IO.FileStream]$fileStream = [System.IO.File]::Open($file, [System.IO.FileMode]::Open)
+
+
+
+##Using the New-Object Cmdlet
+By using the New-Object Cmdlet, we can create a New Object of the loaded type and use it's members
+
+$StringBuilder = New-Object System.Text.StringBuilder 128
+$hashAlgorithm.ComputeHash([System.Text.UTF8Encoding].GetBytes($text)) | ForEach { [void] $StringBuilder.Append($_.ToString("x2")) }
+
+
+##Using reflection.assembly to load a .NET library that isn't loaded by default
+ 
+[reflection.assembly]::loadwithpartialname("System.Windows.Forms") | Out-Null
+$openFile = New-Object System.Windows.Forms.OpenFileDialog
+$openFile.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*" 
+If($openFile.ShowDialog() -eq "OK"
+{get-content $openFile.FileName} 
+
+
+
+##Create our own .NET class at runtime using Add-Type -TypeDefinition
+$source = @"
+public class BasicTest
+{
+  public static int Add(int a, int b)
+    {
+        return (a + b);
+    }
+  public int Multiply(int a, int b)
+    {
+    return (a * b);
+    }
+}
+"@
+
+Add-Type -TypeDefinition $source
+[BasicTest]::Add(4, 3)
+
+$basicTestObject = New-Object BasicTest
+$basicTestObject.Multiply(5, 2)
+
+
+##Load a Third Party DLL
+
+Add-Type -Path $customDll
+$a = new-object custom.type
+[custom.type]::method()
+
+[Reflection.Assembly]::LoadFile($customDll)
+
+
